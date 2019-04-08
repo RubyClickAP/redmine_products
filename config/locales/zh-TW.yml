@@ -17,13 +17,13 @@ zh:
   label_products_edit: 編輯產品
   label_products_line_tax: 稅
   label_products_line_discount: 折扣
-  label_order: 順序
-  label_order_plural: 順序
+  label_order: 己購買
+  label_order_plural: 訂單
   label_products_quantity: 數量
   label_products_total: 總額
   label_products_order_date: 訂單日期
   label_products_closed_date: 關閉日期
-  label_products_order_lines: 訂單明細
+  label_products_order_lines: 購買明細
   label_products_order_placed: 新下訂單
   label_products_product_created: 創建的新產品
   label_products_number: 數量
@@ -35,11 +35,11 @@ zh:
   label_products_order_status_new: 新建訂單狀態
   label_products_order_subject: 訂單主題
   label_products_order_unit_price: 單價
-  label_products_show_in_lines: 在行里顯示
-  label_products_show_in_top_menu: 在頂部菜單中顯示
-  label_products_show_in_app_menu: 在應用菜單中顯示
-  label_products_default_currency: 默認貨幣
-  label_products_cross_project_contacts: 交叉項目聯系人
+  label_products_show_in_lines: 在行內顯示
+  label_products_show_in_top_menu: 在頂部選單中顯示
+  label_products_show_in_app_menu: 在應用選單中顯示
+  label_products_default_currency: 預設貨幣
+  label_products_cross_project_contacts: 交叉項目聯絡人
   label_products_select_companies: 選擇公司
   label_products_order_last_number: '最后的訂單編號是#%{number}'
   label_products_order_internal: 內部訂單
