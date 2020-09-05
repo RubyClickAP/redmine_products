@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2020 RedmineUP
+# Copyright (C) 2011-2019 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 require 'redmine'
 require 'redmine_products'
 
-PRODUCTS_VERSION_NUMBER = '2.1.2'
+PRODUCTS_VERSION_NUMBER = '2.0.6'
 PRODUCTS_VERSION_TYPE = "Light version"
 
 Redmine::Plugin.register :redmine_products do

@@ -3,7 +3,7 @@
 <div class="box tabular">
 <p><%= f.text_field :name, :required => true %></p>
 <p><%= f.text_field :color_name, :label => :field_color, :class => "colorpicker" %><%= javascript_tag "$('#order_status_color_name').colorPicker();"%></p>
-<p><%= f.select :status_type, collection_order_status_types_for_select, :label => l(:label_products_order_status_type), :required => true %></p>
+<p><%= f.check_box :is_closed, :label => :label_products_order_status_closed %></p>
 <p><%= f.check_box :is_default %></p>
 
 </div>

@@ -3,7 +3,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2020 RedmineUP
+# Copyright (C) 2011-2019 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -72,7 +72,7 @@ class OrderStatusesControllerTest < ActionController::TestCase
     @request.session[:user_id] = 1
     assert_difference 'OrderStatus.count', 1 do
       compatible_request :post, :create, :order_status => { :name => 'test', 'color_name' => '#ffffff',
-                                                            :status_type => OrderStatus::ORDER_STATUS_TYPE_COMPLETED, :is_default => '1' }
+                                                            :is_closed => '1', :is_default => '1' }
       assert_redirected_to :controller => 'settings', :action => 'plugin',
                            :id => 'redmine_products', :tab => 'order_statuses'
     end

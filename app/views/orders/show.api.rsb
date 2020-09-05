@@ -3,7 +3,7 @@ api.order do
   api.number @order.number
   api.subject @order.subject
   api.order_date @order.order_date
-  api.completed_date @order.completed_date
+  api.closed_date @order.closed_date
   api.amount @order.amount
   api.currency @order.currency
   api.description @order.description

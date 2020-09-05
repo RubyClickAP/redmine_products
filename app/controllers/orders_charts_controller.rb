@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2020 RedmineUP
+# Copyright (C) 2011-2019 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -26,7 +26,6 @@ class OrdersChartsController < ApplicationController
 
   helper :queries
   helper :crm_queries
-  include ProductsHelper
   include QueriesHelper
   require 'redmine_products'
   include RedmineProducts
@@ -48,11 +47,7 @@ class OrdersChartsController < ApplicationController
   private
 
   def retrieve_charts_query
-    if params[:query_id].present?
-      @query = OrdersChartsQuery.find(params[:query_id])
-      raise ::Unauthorized unless @query.visible?
-      @query.project = @project
-    elsif params[:set_filter] || session[:orders_charts_query].nil? || session[:orders_charts_query][:project_id] != (@project ? @project.id : nil)
+    if params[:set_filter] || session[:orders_charts_query].nil? || session[:orders_charts_query][:project_id] != (@project ? @project.id : nil)
       @query = OrdersChartsQuery.new(name: '_')
       @query.project = @project
       @query.build_from_params(params)
@@ -73,7 +68,14 @@ class OrdersChartsController < ApplicationController
       )
       @query.project = @project
     end
-    @chart = @query.chart
+    @chart = params[:chart] || 'number_of_orders'
   end
 
+  def orders_sum_by_period(peroid)
+    from, to = RedmineContacts::DateUtils.retrieve_date_range(peroid)
+    scope = Order.visible
+    scope = scope.by_project(@project) if @project
+    scope = scope.where('order_date >= ? AND order_date < ?', from, to)
+    scope.group(:currency).sum(:amount)
+ end
 end

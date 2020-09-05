@@ -3,7 +3,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2020 RedmineUP
+# Copyright (C) 2011-2019 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -160,8 +160,8 @@ class OrderTest < ActiveSupport::TestCase
   def test_update_without_settings
     Setting.notified_events = []
     order = Order.find(1)
-    completed_status = OrderStatus.completed.first
-    order.update_attributes(:status => completed_status)
+    closed_status = OrderStatus.where(:is_closed => true).first
+    order.update_attributes(:status => closed_status)
     mail = ActionMailer::Base.deliveries.last
     assert_nil mail
   end
@@ -169,11 +169,11 @@ class OrderTest < ActiveSupport::TestCase
   def test_update_with_settings
     Setting.notified_events.push('products_order_updated')
     order = Order.find(1)
-    completed_status = OrderStatus.completed.first
-    assert_not_equal order.status_id, completed_status.id
+    closed_status = OrderStatus.where(is_closed: true).first
+    assert_not_equal order.status_id, closed_status.id
 
-    order.update_attributes(status: completed_status)
-    assert_equal order.status_id, completed_status.id
+    order.update_attributes(status: closed_status)
+    assert_equal order.status_id, closed_status.id
 
     mail = ActionMailer::Base.deliveries.last
     assert_not_nil mail

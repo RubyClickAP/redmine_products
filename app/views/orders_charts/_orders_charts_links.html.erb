@@ -1,1 +1,8 @@
-
+<h3><%= l(:label_products_chart_plural) %></h3>
+<ul>
+  <li><%= link_to l(:label_products_number_of_orders), {controller: 'orders_charts', action: 'show', chart: 'number_of_orders'}, class: "#{'selected' if @chart == 'number_of_orders'}" %></li>
+  <li><%= link_to l(:label_products_total_sales), {controller: 'orders_charts', action: 'show', chart: 'total_sales'}, class: "#{'selected' if @chart == 'total_sales'}" %></li>
+  <li><%= link_to l(:label_products_average_order_value), {controller: 'orders_charts', action: 'show', chart: 'average_order_value'}, class: "#{'selected' if @chart == 'average_order_value'}" %></li>
+  <li><%= link_to l(:label_products_popular_products), {controller: 'orders_charts', action: 'show', chart: 'popular_products'}, class: "#{'selected' if @chart == 'popular_products'}" %></li>
+  <li><%= link_to l(:label_products_popular_categories), {controller: 'orders_charts', action: 'show', chart: 'popular_categories'}, class: "#{'selected' if @chart == 'popular_categories'}" %></li>
+</ul>

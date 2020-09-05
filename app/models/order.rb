@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2020 RedmineUP
+# Copyright (C) 2011-2019 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -37,16 +37,14 @@ class Order < ActiveRecord::Base
 
   scope :by_project, lambda { |project_id| where(:project_id => project_id) unless project_id.blank? }
   scope :visible, lambda { |*args| joins(:project).where(Project.allowed_to_condition(args.first || User.current, :view_orders)) }
-  scope :open, lambda { 
-    joins(:status).where(order_statuses: {status_type: [OrderStatus::ORDER_STATUS_TYPE_PROCESSING, OrderStatus::ORDER_STATUS_TYPE_DRAFT]})
+  scope :open, lambda { |*args|
+    is_closed = args.size > 0 ? !args.first : false
+    joins(:status).where("#{OrderStatus.table_name}.is_closed = ?", is_closed)
   }
   scope :live_search, lambda { |search| where("(LOWER(#{Order.table_name}.number) LIKE :p OR
                                                 LOWER(#{Order.table_name}.subject) LIKE :p OR
                                                 LOWER(#{Order.table_name}.description) LIKE :p)",
                                                 :p => '%' + search.downcase + '%') }
-  scope :completed, lambda { joins(:status).where("#{OrderStatus.table_name}.status_type = ?", OrderStatus::ORDER_STATUS_TYPE_COMPLETED) }
-  scope :canceled, lambda { joins(:status).where("#{OrderStatus.table_name}.status_type = ?", OrderStatus::ORDER_STATUS_TYPE_CANCELED) }
-  scope :processing, lambda { joins(:status).where("#{OrderStatus.table_name}.status_type = ?", OrderStatus::ORDER_STATUS_TYPE_PROCESSING) }
 
   scope :live_search_with_contact, ->(search) do
     conditions = []
@@ -110,7 +108,7 @@ class Order < ActiveRecord::Base
   acts_as_attachable
   acts_as_priceable :amount, :tax_amount, :subtotal, :total
 
-  before_save :calculate_amount, :update_completed_date
+  before_save :calculate_amount, :update_closed_date
   before_validation :assign_lines
 
   after_create :send_mail_about_create
@@ -170,10 +168,6 @@ class Order < ActiveRecord::Base
     status && status.is_closed?
   end
 
-  def is_completed?
-    status && status.is_completed?
-  end
-
   def invoices
     @invoices ||= Invoice.where(:order_number => order_number) if ProductsSettings.invoices_plugin_installed?
   end
@@ -210,21 +204,21 @@ class Order < ActiveRecord::Base
     try(:contact).try(:address).try(:city)
   end
 
-  def update_completed_date
-    self.completed_date = updated_at if completing? || (new_record? && is_completed?)
-    self.completed_date = nil if opening?
+  def update_closed_date
+    self.closed_date = updated_at if closing? || (new_record? && is_closed?)
+    self.closed_date = nil if opening?
   end
 
-  def completing?
+  def closing?
     if !new_record? && status_id_changed?
-      return true if status_was && status && !status_was.is_completed? && status.is_completed?
+      return true if status_was && status && !status_was.is_closed? && status.is_closed?
     end
     false
   end
 
   def opening?
     if !new_record? && status_id_changed?
-      return true if status_was && status && status_was.is_completed? && !status.is_completed?
+      return true if status_was && status && status_was.is_closed? && !status.is_closed?
     end
     false
   end

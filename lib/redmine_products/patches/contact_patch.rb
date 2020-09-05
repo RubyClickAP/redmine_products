@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2020 RedmineUP
+# Copyright (C) 2011-2019 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ module RedmineProducts
         def orders_balance
           scope = orders.visible
           scope = scope.where(:contact_id => id) unless self.blank?
-          @orders_balance ||= scope.completed.group(:currency).sum(:amount)
+          @orders_balance ||= scope.open.group(:currency).sum(:amount)
         end
       end
     end

@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2020 RedmineUP
+# Copyright (C) 2011-2019 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -128,7 +128,7 @@ class OrdersController < ApplicationController
     @last_order_number = Order.last.try(:number)
     @order.assigned_to = User.current
     @order.currency = ContactsSetting.default_currency
-    @order.order_date = Time.now
+    @order.order_date = Date.today
     @order.contact_id = params[:contact_id] if params[:contact_id]
     if params[:product_ids]
       products = Product.visible.where(:id => params[:product_ids])
@@ -146,7 +146,6 @@ class OrdersController < ApplicationController
     @order.project = @project
     @order.author = User.current
     @order.save_attachments(params[:attachments] || (params[:order] && params[:order][:uploads]))
-    @order.order_date = Time.parse(params[:order][:order_date]) if params[:order] && params[:order][:order_date]
     if @order.save
       render_attachment_warning_if_needed(@order)
 
@@ -167,7 +166,6 @@ class OrdersController < ApplicationController
   def update
     @order.safe_attributes = params[:order]
     @order.save_attachments(params[:attachments] || (params[:order] && params[:order][:uploads]))
-    @order.order_date = Time.parse(params[:order][:order_date]) if params[:order] && params[:order][:order_date]
     if @order.save
       render_attachment_warning_if_needed(@order)
       flash[:notice] = l(:notice_successful_update)
@@ -266,5 +264,16 @@ class OrdersController < ApplicationController
     @project ||= @order.project
   rescue ActiveRecord::RecordNotFound
     render_404
+  end
+
+  def orders_sum_by_period(peroid, contact_id = nil)
+    from, to = RedmineContacts::DateUtils.retrieve_date_range(peroid)
+    scope = Order.where({})
+    scope = scope.visible
+    scope = scope.by_project(@project.id) if @project
+    scope = scope.where("#{Order.table_name}.order_date >= ? AND #{Order.table_name}.order_date < ?", from, to)
+    scope = scope.where("#{Order.table_name}.contact_id = ?", contact_id) unless contact_id.blank?
+    # debugger
+    scope.group(:currency).sum(:amount)
   end
 end

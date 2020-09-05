@@ -1,4 +1,4 @@
-<h3><%= "#{l(:label_products_order_status_completed)}#{' - ' + @order.contact.name.strip if @order && @order.contact}"  %></h3>
+<h3><%= "#{l(:label_products_ordered)}#{' - ' + @order.contact.name.strip if @order && @order.contact}"  %></h3>
 <table class="orders-stat">
   <% if @today_sum  %>
   <tr>

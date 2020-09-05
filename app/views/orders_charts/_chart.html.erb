@@ -14,7 +14,7 @@
 
   <script>
   $(document).ready(function() {
-    $.getJSON(<%= raw url_for(controller: 'orders_charts', action: 'render_chart', project_id: @project, chart: @chart, query_id: @query.try(:id)).to_json %>, function(data) {
+    $.getJSON(<%= raw url_for(controller: 'orders_charts', action: 'render_chart', project_id: @project, chart: @chart).to_json %>, function(data) {
 
       Chart.defaults.global.defaultFontColor = "black";
       Chart.defaults.global.defaultFontFamily = "Arial, sans-serif";

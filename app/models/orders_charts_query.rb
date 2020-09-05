@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2020 RedmineUP
+# Copyright (C) 2011-2019 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -18,25 +18,11 @@
 # along with redmine_products.  If not, see <http://www.gnu.org/licenses/>.
 
 class OrdersChartsQuery < OrderQuery
-  DAY_INTERVAL     = 'day'.freeze
-  WEEK_INTERVAL    = 'week'.freeze
-  MONTH_INTERVAL   = 'month'.freeze
-  QUARTER_INTERVAL = 'quarter'.freeze
-  YEAR_INTERVAL    = 'year'.freeze
-
-  TIME_INTERVALS = [DAY_INTERVAL, WEEK_INTERVAL, MONTH_INTERVAL, QUARTER_INTERVAL, YEAR_INTERVAL].freeze
-
-  NUMBER_OF_ORDERS    = 'number_of_orders'.freeze
-  TOTAL_SALES         = 'total_sales'.freeze
-  AVERAGE_ORDER_VALUE = 'average_order_value'.freeze
-  POPULAR_PRODUCTS    = 'popular_products'.freeze
-  POPULAR_CATEGORIES  = 'popular_categories'.freeze
-
-  CHARTS = [NUMBER_OF_ORDERS, TOTAL_SALES, AVERAGE_ORDER_VALUE, POPULAR_PRODUCTS, POPULAR_CATEGORIES].freeze
+  attr_reader :interval_size
 
   def initialize(attributes = nil)
     super
-    self.filters = {'report_date_period' => { operator: 'm', values: [''] }}.merge(self.filters) if self.filters['report_date_period'].blank?
+    filters['report_date_period'] = { operator: 'm', values: [''] } if filters['report_date_period'].blank?
   end
 
   def initialize_available_filters
@@ -62,44 +48,21 @@ class OrdersChartsQuery < OrderQuery
     end
     self.group_by = params[:group_by] || (params[:query] && params[:query][:group_by])
     self.column_names = params[:c] || (params[:query] && params[:query][:column_names])
-    self.chart = params[:chart] || (params[:query] && params[:query][:chart])
-    self.interval_size = params[:interval_size] || (params[:query] && params[:query][:interval_size])
+    self.interval_size = params[:interval_size] if params[:interval_size]
     self
   end
 
-  def chart
-    CHARTS.include?(options[:chart]) ? options[:chart] : NUMBER_OF_ORDERS
-  end
-
-  def chart=(value)
-    options[:chart] = value
-  end
-
-  def interval_size
-    TIME_INTERVALS.include?(options[:interval_size]) ? options[:interval_size] : DAY_INTERVAL
-  end
-
   def interval_size=(value)
-    options[:interval_size] = value
+    allowed_values = %w(year quarter month week day)
+
+    if allowed_values.include?(value)
+      @interval_size = value
+    else
+      raise ArgumentError.new("value must be one of: #{allowed_values.join(', ')}")
+    end
   end
 
   def sql_for_report_date_period_field(field, operator, values)
-    date = User.current.today
-
-    case operator
-    when 'w'
-      first_day_of_week = l(:general_first_day_of_week).to_i
-      day_of_week = date.cwday
-      days_ago = (day_of_week >= first_day_of_week ? day_of_week - first_day_of_week : day_of_week + 7 - first_day_of_week)
-      sql_for_field(field, '><t-', [days_ago], Order.table_name, 'order_date')
-    when 'm'
-      days_ago = date - date.beginning_of_month
-      sql_for_field(field, '><t-', [days_ago], Order.table_name, 'order_date')
-    when 'y'
-      days_ago = date - date.beginning_of_year
-      sql_for_field(field, '><t-', [days_ago], Order.table_name, 'order_date')
-    else
-      sql_for_field(field, operator, values, Order.table_name, 'order_date')
-    end
+    sql_for_field(field, operator, values, Order.table_name, 'order_date')
   end
 end

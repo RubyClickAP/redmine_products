@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2020 RedmineUP
+# Copyright (C) 2011-2019 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -60,7 +60,7 @@ class OrderQuery < Query
     add_available_filter 'amount', :type => :float, :label => :label_products_amount
     add_available_filter 'created_at', :type => :date_past, :label => :field_created_on
     add_available_filter 'updated_at', :type => :date_past, :label => :field_updated_on
-    add_available_filter 'completed_date', :type => :date_past, :label => :label_products_completed_date
+    add_available_filter 'closed_date', :type => :date_past, :label => :label_products_closed_date
     add_available_filter 'order_date', :type => :date, :label => :label_products_order_date
     add_available_filter 'contact', type: :contact, name: l(:field_contacts)
 
@@ -137,13 +137,12 @@ class OrderQuery < Query
   end
 
   def sql_for_status_id_field(field, operator, value)
-    return "1=1" unless OrderStatus.any?
     sql =
       case operator
       when 'o'
-        "#{queried_table_name}.status_id IN (#{OrderStatus.open.pluck(:id).join(",")})" if field == 'status_id'
+        "#{queried_table_name}.status_id IN (SELECT id FROM #{OrderStatus.table_name} WHERE is_closed=#{ActiveRecord::Base.connection.quoted_false})" if field == 'status_id'
       when 'c'
-        "#{queried_table_name}.status_id IN (#{OrderStatus.closed.pluck(:id).join(",")})" if field == 'status_id'
+        "#{queried_table_name}.status_id IN (SELECT id FROM #{OrderStatus.table_name} WHERE is_closed=#{ActiveRecord::Base.connection.quoted_true})" if field == 'status_id'
       else
         sql_for_field(field, operator, value, queried_table_name, field)
       end

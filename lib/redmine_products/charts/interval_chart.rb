@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2020 RedmineUP
+# Copyright (C) 2011-2019 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -72,14 +72,11 @@ module RedmineProducts
       end
 
       def date_from
-        @date_from ||= begin
-          date = @statement.match("order_date > '#{db_timestamp_regex}") { |m| Time.zone.parse(m[1]) }
-          date ? date + 1 : @orders.first.try(:order_date)
-        end
+        @date_from ||= @statement.match("order_date > '#{db_timestamp_regex}") { |m| Time.zone.parse(m[1]) } || @orders.first.order_date
       end
 
       def date_to
-        @date_to ||= @statement.match("order_date <= '#{db_timestamp_regex}") { |m| Time.zone.parse(m[1]) } || @orders.last.try(:order_date)
+        @date_to ||= @statement.match("order_date <= '#{db_timestamp_regex}") { |m| Time.zone.parse(m[1]) } || @orders.last.order_date
       end
 
       def random_color
@@ -106,11 +103,11 @@ module RedmineProducts
 
       def init_data
         return [] if @orders.none?
-        build_date_intervals([], DateUtils.start_of(@interval_size, date_from))
+        build_date_intervals([], DateUtils.start_of(@interval_size, date_from + 1))
       end
 
       def build_date_intervals(intervals, date)
-        return intervals if date > date_to.to_date
+        return intervals if date >= (date_to + 1).to_date
         intervals << { 'interval' => date }
         build_date_intervals(intervals, DateUtils.next(@interval_size, date))
       end

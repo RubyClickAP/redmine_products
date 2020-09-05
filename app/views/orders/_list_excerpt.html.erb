@@ -38,8 +38,8 @@
 							<% else %>
 								<%= contact_tag(order.contact, :type => :plain) %>
 							<% end %>
-							<% if order.is_completed? %>
-								 - <%= l(:label_products_order_status_completed) %>: <%= format_date(order.completed_date) %>
+							<% if order.is_closed? %>
+								 - <%= l(:label_products_order_status_closed) %>: <%= format_date(order.closed_date) %>
 							<% end %>
 						</p>
 				</td>

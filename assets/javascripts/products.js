@@ -127,14 +127,3 @@ $(function() {
     });
   }
 });
-
-// Hide a filter checkbox so that it couldn't be unchecked
-function hideFilterCheckbox(filter) {
-  $('#cb_' + filter).hide();
-  $('label[for=cb_' + filter + ']').removeAttr("for");
-};
-
-function toggleIntervalSize(chart, target) {
-  var showTarget = (chart !== 'popular_products' && chart !== 'popular_categories');
-  $('#' + target).toggle(showTarget);
-};

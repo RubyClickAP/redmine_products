@@ -17,7 +17,7 @@ zh:
   label_products_edit: 編輯產品
   label_products_line_tax: 稅
   label_products_line_discount: 折扣
-  label_order: 訂單
+  label_order: 己購買
   label_order_plural: 訂單
   label_products_quantity: 數量
   label_products_total: 總額
@@ -66,9 +66,9 @@ zh:
   label_products_order_updated: 訂單更新
   label_products_order_comment_added: 將注釋添加至訂單
   label_products_add_description: 增加說明
-  label_products_search_for_products: 搜索產品添加
+  label_products_search_for_products: 搜尋產品
   label_products_add_product_plural: 增加產品
-  label_products_search_for_product: 搜素產品
+  label_products_search_for_product: 搜尋產品
   label_products_create_invoice: 創建發票
 
   permission_manage_product_relations: 管理產品關系
