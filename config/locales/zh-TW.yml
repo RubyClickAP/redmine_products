@@ -41,7 +41,7 @@ zh:
   label_products_default_currency: 默認貨幣
   label_products_cross_project_contacts: 交叉項目聯系人
   label_products_select_companies: 選擇公司
-  label_products_order_last_number: '最后的訂單編號是#%{number}'
+  label_products_order_last_number: '最後的訂單編號是#%{number}'
   label_products_order_internal: 內部訂單
   label_products_order_status_completed: 關閉
   label_products_ordered: 已訂
