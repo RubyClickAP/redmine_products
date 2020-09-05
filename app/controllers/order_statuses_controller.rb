@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2019 RedmineUP
+# Copyright (C) 2011-2020 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -23,6 +23,8 @@ class OrderStatusesController < ApplicationController
   before_action :require_admin, :except => :index
   before_action :require_admin_or_api_request, :only => :index
   accept_api_auth :index
+
+  helper :products
 
   def index
     respond_to do |format|

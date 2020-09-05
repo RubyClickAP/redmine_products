@@ -18,7 +18,7 @@ pl:
   label_products_quantity: Ilość
   label_products_total: Total
   label_products_order_date: Data zamówienia
-  label_products_closed_date: Closed date
+  label_products_completed_date: Closed date
   label_products_order_lines: Order lines
   label_products_order_placed: Złożono nowe zamówienie
   label_products_product_created: Stworzono nowy produkt
@@ -39,7 +39,7 @@ pl:
   label_products_select_companies: Select companies
   label_products_order_last_number: 'Last order number was #%{number}'
   label_products_order_internal: Internal order
-  label_products_order_status_closed: Closed
+  label_products_order_status_completed: Closed
   label_products_ordered: Ordered
   label_products_image: Obrazek
   label_products_recent: Ostatnie produkty

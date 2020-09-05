@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2019 RedmineUP
+# Copyright (C) 2011-2020 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -43,22 +43,22 @@ module RedmineProducts
       private
 
       def top_ten
-        sum.limit(10)
+        sum.first(10).map { |row| { 'label' => row['label'], 'quantity_sum' => row['quantity_sum'] } }
       end
 
       def other
-        Order
-          .select("'#{l(:label_products_others)}' AS label, SUM(other.quantity_sum) AS quantity_sum")
-          .from("(#{sum.offset(10).to_sql}) other")
-          .having('SUM(other.quantity_sum) > 0')
+        quantity_sum = sum.drop(10).inject(0) { |sum, row| sum + row['quantity_sum'].to_f }
+        quantity_sum > 0 ? [{ 'label' => l(:label_products_others), 'quantity_sum' => quantity_sum }] : []
       end
 
       def sum
-        @orders
-          .joins(joins)
-          .select("#{grouping_field} AS label, SUM(product_lines.quantity) AS quantity_sum")
-          .group(grouping_field)
-          .reorder('quantity_sum DESC')
+        @sum ||=
+          @orders
+            .joins(joins)
+            .select("#{grouping_field} AS label, SUM(product_lines.quantity) AS quantity_sum")
+            .group(grouping_field)
+            .reorder('quantity_sum DESC')
+            .to_a
       end
 
       def joins

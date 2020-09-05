@@ -5,7 +5,7 @@ api.array :order_statuses do
       api.name status.name
       api.color status.color_name
       api.is_default status.is_default
-      api.is_closed status.is_closed
+      api.status_type status.status_type
     end
   end
 end

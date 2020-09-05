@@ -3,7 +3,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2019 RedmineUP
+# Copyright (C) 2011-2020 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -68,7 +68,7 @@ class TotalSalesTest < ActiveSupport::TestCase
     assert_equal chart.currencies.count, chart.datasets.length
 
     usd_orders = query.orders.where(currency: 'USD')
-    expected = Array.new(7, 0.0)
+    expected = Array.new(Date.today.cwday, 0.0)
     expected[Date.today.wday] = usd_orders.map(&:amount).inject(:+).to_f
     usd_sales = chart.datasets.find { |row| row[:label] == 'USD' }
     assert_equal expected, usd_sales[:data]
@@ -84,7 +84,7 @@ class TotalSalesTest < ActiveSupport::TestCase
     assert_equal chart.currencies.count, chart.datasets.length
 
     rub_orders = query.orders.where(currency: 'RUB')
-    expected = Array.new(Time.days_in_month(Date.today.month), 0.0)
+    expected = Array.new(Date.today.day, 0.0)
     expected[Date.today.mday - 1] = rub_orders.map(&:amount).inject(:+).to_f
     rub_sales = chart.datasets.find { |row| row[:label] == 'RUB' }
     assert_equal expected, rub_sales[:data]
@@ -100,7 +100,7 @@ class TotalSalesTest < ActiveSupport::TestCase
     assert_equal chart.currencies.count, chart.datasets.length
 
     usd_orders = query.orders.where(currency: 'USD')
-    expected = Array.new(4, 0.0)
+    expected = Array.new(Date.today.month.fdiv(3).ceil, 0.0)
     expected[(Date.today.month - 1) / 3] = usd_orders.map(&:amount).inject(:+).to_f
     usd_sales = chart.datasets.find { |row| row[:label] == 'USD' }
     assert_equal expected, usd_sales[:data]
@@ -116,7 +116,7 @@ class TotalSalesTest < ActiveSupport::TestCase
     assert_equal chart.currencies.count, chart.datasets.length
 
     rub_orders = query.orders.where(currency: 'RUB')
-    expected = Array.new(12, 0.0)
+    expected = Array.new(Date.today.month, 0.0)
     expected[Date.today.month - 1] = rub_orders.map(&:amount).inject(:+).to_f
     rub_sales = chart.datasets.find { |row| row[:label] == 'RUB' }
     assert_equal expected, rub_sales[:data]

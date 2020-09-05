@@ -18,7 +18,7 @@ ru:
   label_products_quantity: Кол-во
   label_products_total: Итого
   label_products_order_date: Дата заказа
-  label_products_closed_date: Дата закрытия
+  label_products_completed_date: Дата завершение
   label_products_order_lines: Строки заказа
   label_products_order_placed: Новый задаз размещен
   label_products_product_created: Новый продукт создан
@@ -39,7 +39,7 @@ ru:
   label_products_select_companies: Клиенты только компании
   label_products_order_last_number: 'Номер последнего заказа #%{number}'
   label_products_order_internal: Внутренний заказ
-  label_products_order_status_closed: Закрытый
+  label_products_order_status_completed: Закрытый
   label_products_ordered: Заказов
   label_products_image: Изображение
   label_products_recent: Недавние продуты
@@ -97,3 +97,13 @@ ru:
   permission_manage_public_orders_queries: Управление общими запросами
 
   label_products_last_number: 'Код предыдущего продукта #%{code}'
+
+  label_products_chart: Диаграмма
+  label_products_chart_plural: Диаграммы
+
+  label_products_interval_size: Размер интервала
+  label_products_day: День
+  label_products_week: Неделя
+  label_products_month: Месяц
+  label_products_quarter: Квартал
+  label_products_year: Год

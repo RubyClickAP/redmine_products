@@ -3,7 +3,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2019 RedmineUP
+# Copyright (C) 2011-2020 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -135,14 +135,16 @@ class OrdersControllerTest < ActionController::TestCase
   end
 
   def test_get_show
-    compatible_request :get, :show, :id => 1
-    assert_response :success
-    assert_select 'table.product-lines' do
-      assert_select 'tr.total' do
-        assert_select 'th.total_units', '20.0'
-        assert_select 'th.subtotal_amount', '$6,571.00'
-        assert_select 'th.tax_amount', /71.2/
-        assert_select 'th.total_amount', '$6,642.00'
+    with_contacts_settings(thousands_delimiter: ',') do
+      compatible_request :get, :show, :id => 1
+      assert_response :success
+      assert_select 'table.product-lines' do
+        assert_select 'tr.total' do
+          assert_select 'th.total_units', '20.0'
+          assert_select 'th.subtotal_amount', '$6,571.00'
+          assert_select 'th.tax_amount', /71.2/
+          assert_select 'th.total_amount', '$6,642.00'
+        end
       end
     end
   end
@@ -165,7 +167,7 @@ class OrdersControllerTest < ActionController::TestCase
                     :subject => 'New sales order',
                     :project_id => '1',
                     :contact_id => '3',
-                    :order_date => '2013-11-04',
+                    :order_date => '2013-11-04 10:00',
                     :status_id => '2',
                     :currency => 'USD',
                     :assigned_to_id => '3',
@@ -214,7 +216,7 @@ class OrdersControllerTest < ActionController::TestCase
                  :subject => "Updated sales order",
                  :project_id => "5",
                  :contact_id => "3",
-                 :order_date => "2013-11-04",
+                 :order_date => "2013-11-04 10:00",
                  :status_id => "2",
                  :currency => "EUR",
                  :assigned_to_id => "3",

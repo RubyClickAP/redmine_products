@@ -3,7 +3,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2019 RedmineUP
+# Copyright (C) 2011-2020 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -39,6 +39,21 @@ module ProductsHelper
     else
       content_tag(:span, "#{image} #{product_name}".html_safe, :class => "product")
     end
+  end
+
+  def orders_sum_by_period(peroid, contact_id = nil)
+    from, to = RedmineContacts::DateUtils.retrieve_date_range(peroid)
+    scope = Order.completed
+    scope = scope.visible
+    scope = scope.by_project(@project.id) if @project
+    scope = scope.where("#{Order.table_name}.order_date >= ? AND #{Order.table_name}.order_date < ?", from, to)
+    scope = scope.where("#{Order.table_name}.contact_id = ?", contact_id) unless contact_id.blank?
+    # debugger
+    scope.group(:currency).sum(:amount)
+  end
+
+  def collection_order_status_types_for_select
+    OrderStatus::STATUS_TYPES.map{|k, v| [l(v), k]}
   end
 
   def products_check_box_tags(name, products)
@@ -246,5 +261,39 @@ module ProductsHelper
       @query ||= OrderQuery.new(:name => "_", :filters => session[:orders_query][:filters], :group_by => session[:orders_query][:group_by], :column_names => session[:orders_query][:column_names])
       @query.project = @project
     end
+  end
+
+  def datetime_calendar_for(field_id)
+    include_datetime_calendar_headers_tags
+    javascript_tag("$(function() { $('##{field_id}').datetimepicker(dateTimePickerOptions); });")
+  end
+
+  def include_datetime_calendar_headers_tags
+    unless @datetime_calendar_headers_tags
+      tags = ''.html_safe
+      @datetime_calendar_headers_tags = true
+      content_for :header_tags do
+        start_of_week = Setting.start_of_week
+        start_of_week = l(:general_first_day_of_week, :default => '1') if start_of_week.blank?
+        start_of_week = start_of_week.to_i % 7
+
+        locale_keys = ::I18n.backend.send(:translations)[::I18n.config.locale]
+        time_format = Setting.time_format.blank? ? locale_keys[:time][:formats][:time] : Setting.time_format
+        time_format = time_format.to_s.gsub('%H', 'H').gsub('%I', 'hh').gsub('%M', 'mm').gsub('%p', 'tt')
+
+        tags << javascript_tag(
+                  "var dateTimePickerOptions = {dateFormat: 'yy-mm-dd', timeFormat: '#{time_format}', firstDay: #{start_of_week}," +
+                  "showOn: 'button', buttonImageOnly: true, buttonImage: '" +
+                  path_to_image('/images/calendar.png') +
+                  "', showButtonPanel: true, controlType: 'select', oneLine: true, };")
+        tags
+      end
+    end
+  end
+
+  def format_datetime(time)
+    formated_time = format_time(time, false)
+    formated_date = ::I18n.l(time.to_date, format: '%Y-%m-%d')
+    "#{formated_date} #{formated_time}"
   end
 end

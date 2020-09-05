@@ -19,7 +19,7 @@
     </thead>
     <tbody id="sortable">
       <tr class='line' style="display:none;"></tr>
-      <% parent_object.lines.sort_by { |line| line.position }.each.with_index do |line, idx| %>
+      <% parent_object.lines.sort_by { |line| line.position.to_i }.each.with_index do |line, idx| %>
         <%= form.fields_for :lines, line do |builder| %>
           <%= render :partial => 'line_fields', :locals => {:f => builder, :idx => idx} %>
         <% end %>

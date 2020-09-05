@@ -1,7 +1,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2019 RedmineUP
+# Copyright (C) 2011-2020 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -35,6 +35,7 @@ class ProductsController < ApplicationController
   helper :crm_queries
   helper :notes
   helper :queries
+  helper :invoices if defined?(InvoicesHelper)
   include SortHelper
   include ProductsHelper
   include QueriesHelper

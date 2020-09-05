@@ -18,7 +18,7 @@ en:
   label_products_quantity: Quantity
   label_products_total: Total
   label_products_order_date: Order date
-  label_products_closed_date: Closed date
+  label_products_completed_date: Completed date
   label_products_order_lines: Order lines
   label_products_order_placed: New order placed
   label_products_product_created: New product created
@@ -39,7 +39,7 @@ en:
   label_products_select_companies: Select companies
   label_products_order_last_number: 'Last order number was #%{number}'
   label_products_order_internal: Internal order
-  label_products_order_status_closed: Closed
+  label_products_order_status_completed: Completed
   label_products_ordered: Ordered
   label_products_image: Image
   label_products_recent: Recent products
@@ -84,7 +84,7 @@ en:
   permission_add_products: Add products
   permission_edit_products: Edit products
   permission_delete_products: Delete products
-  permission_import_products: Imporst products
+  permission_import_products: Imports products
   permission_save_products_queries: Save products queries
   permission_manage_public_products_queries: Manage public products queries
   permission_view_orders: View orders
@@ -134,3 +134,9 @@ en:
   label_products_number_of_orders_y_axis: "# of orders"
   label_products_others: Others
   label_products_sales: Sales
+
+  label_products_order_status_type: Status type
+  label_products_status_type_processing: Processing
+  label_products_status_type_completed: Completed
+  label_products_status_type_draft: Draft
+  label_products_status_type_canceled: Canceled

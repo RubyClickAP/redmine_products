@@ -22,7 +22,7 @@ zh:
   label_products_quantity: 个数
   label_products_total: 总额
   label_products_order_date: 订单日期
-  label_products_closed_date: 关闭日期
+  label_products_completed_date: 关闭日期
   label_products_order_lines: 订单明细
   label_products_order_placed: 新下订单
   label_products_product_created: 创建的新产品
@@ -43,7 +43,7 @@ zh:
   label_products_select_companies: 选择公司
   label_products_order_last_number: '最后的订单编号是#%{number}'
   label_products_order_internal: 内部订单
-  label_products_order_status_closed: 关闭
+  label_products_order_status_completed: 关闭
   label_products_ordered: 已订
   label_products_image: 图片
   label_products_recent: 近期产品

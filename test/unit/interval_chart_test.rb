@@ -3,7 +3,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2019 RedmineUP
+# Copyright (C) 2011-2020 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -46,7 +46,7 @@ class IntervalChartTest < ActiveSupport::TestCase
     query.filters['report_date_period'][:values] = ['2018-03-30']
 
     date_from = RedmineProducts::Charts::IntervalChart.new(query).date_from
-    assert_match date_from.to_s(:db), query.statement
+    assert_match (date_from - 1).to_s(:db), query.statement
   end
 
   def test_date_from_with_today_operator
@@ -55,7 +55,7 @@ class IntervalChartTest < ActiveSupport::TestCase
     query.filters['report_date_period'][:values] = ['']
 
     date_from = RedmineProducts::Charts::IntervalChart.new(query).date_from
-    assert_match date_from.to_s(:db), query.statement
+    assert_match (date_from - 1).to_s(:db), query.statement
   end
 
   def test_date_from_with_last_two_weeks_operator
@@ -64,7 +64,7 @@ class IntervalChartTest < ActiveSupport::TestCase
     query.filters['report_date_period'][:values] = ['']
 
     date_from = RedmineProducts::Charts::IntervalChart.new(query).date_from
-    assert_match date_from.to_s(:db), query.statement
+    assert_match (date_from - 1).to_s(:db), query.statement
   end
 
   def test_date_from_with_any_operator
@@ -83,7 +83,7 @@ class IntervalChartTest < ActiveSupport::TestCase
 
     date_from = RedmineProducts::Charts::IntervalChart.new(query).date_from
 
-    assert_equal query.orders.first.order_date, date_from
+    assert_equal query.orders.first.try(:order_date), date_from
   end
 
   def test_date_to_with_this_month_operator

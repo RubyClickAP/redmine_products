@@ -24,7 +24,7 @@
     rows.left l(:label_contact), contact_tag(@order.contact) if @order.contact
     rows.left l(:field_assigned_to), "#{avatar(@order.assigned_to, :size => '14')}#{@order.assigned_to ? link_to_user(@order.assigned_to) : "-"}".html_safe
     rows.right l(:label_products_order_date), format_time(@order.order_date)
-    rows.right l(:label_products_closed_date), format_time(@order.closed_date)
+    rows.right l(:label_products_completed_date), format_time(@order.completed_date)
   end %>
 
 <%= call_hook(:view_orders_show_details_bottom, :order => @order) %>

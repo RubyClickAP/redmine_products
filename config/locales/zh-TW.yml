@@ -11,19 +11,19 @@ zh:
   label_products_status: 狀態
   label_products_description: 說明
   label_products_name: 名稱
-  label_products_status_active: 已激活
-  label_products_status_inactive: 未激活
+  label_products_status_active: 已啟動
+  label_products_status_inactive: 未啟動
   label_products_new: 新建產品
   label_products_edit: 編輯產品
   label_products_line_tax: 稅
   label_products_line_discount: 折扣
-  label_order: 己購買
+  label_order: 訂單
   label_order_plural: 訂單
   label_products_quantity: 數量
   label_products_total: 總額
   label_products_order_date: 訂單日期
-  label_products_closed_date: 關閉日期
-  label_products_order_lines: 購買明細
+  label_products_completed_date: 關閉日期
+  label_products_order_lines: 訂單明細
   label_products_order_placed: 新下訂單
   label_products_product_created: 創建的新產品
   label_products_number: 數量
@@ -35,15 +35,15 @@ zh:
   label_products_order_status_new: 新建訂單狀態
   label_products_order_subject: 訂單主題
   label_products_order_unit_price: 單價
-  label_products_show_in_lines: 在行內顯示
-  label_products_show_in_top_menu: 在頂部選單中顯示
-  label_products_show_in_app_menu: 在應用選單中顯示
-  label_products_default_currency: 預設貨幣
-  label_products_cross_project_contacts: 交叉項目聯絡人
+  label_products_show_in_lines: 在行里顯示
+  label_products_show_in_top_menu: 在頂部菜單中顯示
+  label_products_show_in_app_menu: 在應用菜單中顯示
+  label_products_default_currency: 默認貨幣
+  label_products_cross_project_contacts: 交叉項目聯系人
   label_products_select_companies: 選擇公司
   label_products_order_last_number: '最后的訂單編號是#%{number}'
   label_products_order_internal: 內部訂單
-  label_products_order_status_closed: 關閉
+  label_products_order_status_completed: 關閉
   label_products_ordered: 已訂
   label_products_image: 圖片
   label_products_recent: 近期產品
@@ -80,3 +80,24 @@ zh:
   label_product_category_new: 新建分類
   label_products_parent: 歸屬
   label_products_category_filter: 產品的分類
+
+#1.1.1
+  project_module_products: 產品
+  project_module_orders: 訂單
+  permission_view_products: 查看產品
+  permission_add_products: 添加產品
+  permission_edit_products: 編輯產品
+  permission_delete_products: 移除產品
+  permission_import_products: 滙入產品
+  permission_save_products_queries: 儲存產品查詢
+  permission_manage_public_products_queries: 管理公開產品查询
+  permission_view_orders: 查看訂單
+  permission_add_orders: 添加訂單
+  permission_edit_orders: 编辑訂單
+  permission_delete_orders: 删除訂單
+  permission_comment_orders: 評論訂單
+  permission_import_orders: 滙入訂單
+  permission_save_orders_queries: 儲存訂單查询
+  permission_manage_public_orders_queries: 管理公開訂單查询
+
+  label_products_last_number: '最後的產品碼是 #%{code}'

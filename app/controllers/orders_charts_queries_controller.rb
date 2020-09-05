@@ -17,16 +17,5 @@
 # You should have received a copy of the GNU General Public License
 # along with redmine_products.  If not, see <http://www.gnu.org/licenses/>.
 
-class AddCategoryIdToProducts < Rails.version < '5.1' ? ActiveRecord::Migration : ActiveRecord::Migration[4.2]
-  def self.up
-    add_column :products, :category_id, :integer
-    change_column :products, :code, :string, :null => true
-
-    add_index :products, :category_id
-  end
-
-  def self.down
-    remove_column :products, :category_id, :integer
-    change_column :products, :code, :string, :null => false
-  end
+class OrdersChartsQueriesController < ApplicationController
 end

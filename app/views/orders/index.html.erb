@@ -16,11 +16,13 @@
             var url = form.attr("action");
             form.find('[name="c[]"] option').each(function(i, elem){
               $(elem).attr('selected', true);
+              $(elem).prop('selected', true);
             });
             var formData = form.serialize();
 
             form.find('[name="c[]"] option').each(function(i, elem){
               $(elem).attr('selected', false);
+              $(elem).prop('selected', false);
             });
             $.get(url, formData, function(data) { // perform an AJAX get, the trailing function is what happens on successful get.
                 $("#contact_list").html(data); // replace the "results" div with the result of action taken
@@ -43,13 +45,13 @@
 
 <div id="query_form_content" class="hide-when-print">
   <fieldset id="filters" class="collapsible <%= @query.new_record? ? "" : "collapsed" %>">
-    <legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
+    <legend class="icon icon-<%= @query.new_record? ? 'expended' : 'collapsed' %>" onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
     <div style="<%= @query.new_record? ? "" : "display: none;" %>">
       <%= render :partial => 'queries/filters', :locals => {:query => @query} %>
     </div>
   </fieldset>
   <fieldset class="collapsible collapsed">
-    <legend onclick="toggleFieldset(this);"><%= l(:label_options) %></legend>
+    <legend class="icon icon-collapsed" onclick="toggleFieldset(this);"><%= l(:label_options) %></legend>
     <div style="display: none;">
       <table>
         <tr style="<%= 'display: none;' if orders_list_style != 'list' %>">

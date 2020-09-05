@@ -3,7 +3,7 @@
 # This file is a part of Redmine Products (redmine_products) plugin,
 # customer relationship management plugin for Redmine
 #
-# Copyright (C) 2011-2019 RedmineUP
+# Copyright (C) 2011-2020 RedmineUP
 # http://www.redmineup.com/
 #
 # redmine_products is free software: you can redistribute it and/or modify
@@ -60,7 +60,7 @@ class NumberOfOrdersTest < ActiveSupport::TestCase
     query.filters['report_date_period'][:values] = ['']
     query.interval_size = 'day'
 
-    expected = Array.new(7, 0)
+    expected = Array.new(Date.today.cwday, 0)
     expected[Date.today.wday] = query.orders.count
     datasets = RedmineProducts::Charts::NumberOfOrders.new(query).datasets
 
@@ -74,7 +74,7 @@ class NumberOfOrdersTest < ActiveSupport::TestCase
     query.filters['report_date_period'][:values] = ['']
     query.interval_size = 'day'
 
-    expected = Array.new(Time.days_in_month(Date.today.month), 0)
+    expected = Array.new(Date.today.day, 0)
     expected[Date.today.mday - 1] = query.orders.count
     datasets = RedmineProducts::Charts::NumberOfOrders.new(query).datasets
 
@@ -88,7 +88,7 @@ class NumberOfOrdersTest < ActiveSupport::TestCase
     query.filters['report_date_period'][:values] = ['']
     query.interval_size = 'quarter'
 
-    expected = Array.new(4, 0)
+    expected = Array.new(Date.today.month.fdiv(3).ceil, 0)
     expected[(Date.today.month - 1) / 3] = query.orders.count
     datasets = RedmineProducts::Charts::NumberOfOrders.new(query).datasets
 
@@ -102,7 +102,7 @@ class NumberOfOrdersTest < ActiveSupport::TestCase
     query.filters['report_date_period'][:values] = ['']
     query.interval_size = 'month'
 
-    expected = Array.new(12, 0)
+    expected = Array.new(Date.today.month, 0)
     expected[Date.today.month - 1] = query.orders.count
     datasets = RedmineProducts::Charts::NumberOfOrders.new(query).datasets
 

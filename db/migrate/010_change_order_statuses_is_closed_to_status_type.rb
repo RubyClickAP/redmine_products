@@ -17,16 +17,18 @@
 # You should have received a copy of the GNU General Public License
 # along with redmine_products.  If not, see <http://www.gnu.org/licenses/>.
 
-class AddCategoryIdToProducts < Rails.version < '5.1' ? ActiveRecord::Migration : ActiveRecord::Migration[4.2]
-  def self.up
-    add_column :products, :category_id, :integer
-    change_column :products, :code, :string, :null => true
-
-    add_index :products, :category_id
+class ChangeOrderStatusesIsClosedToStatusType < Rails.version < '5.1' ? ActiveRecord::Migration : ActiveRecord::Migration[4.2]
+  def up
+    add_column :order_statuses, :status_type, :integer, :null => false, :default => OrderStatus::ORDER_STATUS_TYPE_PROCESSING
+    OrderStatus.where(is_closed: true).update_all(status_type: OrderStatus::ORDER_STATUS_TYPE_COMPLETED)
+    remove_column :order_statuses, :is_closed
+    rename_column :orders, :closed_date, :completed_date
   end
 
-  def self.down
-    remove_column :products, :category_id, :integer
-    change_column :products, :code, :string, :null => false
+  def down
+    add_column :order_statuses, :is_closed, :boolean, :null => true
+    rename_column :orders, :completed_date, :closed_date
+    remove_column :order_statuses, :status_type
   end
+
 end
