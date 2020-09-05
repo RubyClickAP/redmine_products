@@ -24,7 +24,7 @@
   <p class="object-select">
       <%= f.select :status_id, collection_for_order_status_for_select, :label => l(:label_products_status), :required => true %>
   </p>
-  <p><%= f.select :currency, collection_for_currencies_select(ContactsSetting.default_currency, ContactsSetting.major_currencies), :label => l(:label_products_currency), :include_blank => true  %></p>
+  <p><%= f.select :currency, collection_for_currencies_select(ContactsSetting.default_currency), :label => l(:label_products_currency), :include_blank => true  %></p>
   <p class="object-select"><%= f.select :assigned_to_id, (@project.assignable_users.collect {|m| [m.name, m.id]}), :include_blank => true, :label => l(:field_assigned_to) %></p>
 </div>
 </div>

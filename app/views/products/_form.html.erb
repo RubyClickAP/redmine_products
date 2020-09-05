@@ -31,7 +31,7 @@
   <p class="category"><%= f.select :category_id, product_category_tree_options_for_select(product_categories_for_select, :selected => @product.category), :label => l(:label_products_category), :include_blank => true %></p>
   <% end %>
   <p class="price"><%= f.text_field :price, :label => l(:label_products_price), :size => 10 %>
-        <%= select_tag "product[currency]", options_for_select(collection_for_currencies_select(ContactsSetting.default_currency, ContactsSetting.major_currencies), @product.currency), :include_blank => true, :style => "width: initial;"  %>
+        <%= select_tag "product[currency]", options_for_select(collection_for_currencies_select(ContactsSetting.default_currency), @product.currency), :include_blank => true, :style => "width: initial;"  %>
   </p>
 </div>
 </div>
